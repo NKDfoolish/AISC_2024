@@ -8,8 +8,10 @@ import { RolesGuard } from "src/guards/roles.guard";
 import { Roles } from "../decorators/roles.decorator";
 import { CurrentUser } from "../decorators/current-user.decorator";
 import { User } from "src/database/entities/user.entity";
+import { ApiTags } from "@nestjs/swagger";
 
 @Controller('users')
+@ApiTags('users')
 export class UserController {
     constructor(
         private userService: UsersService,
