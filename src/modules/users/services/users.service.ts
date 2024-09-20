@@ -4,6 +4,7 @@ import { User } from "src/database/entities/user.entity";
 import { Repository } from "typeorm";
 import { UpdateUserDto } from "../dto/update-user.dto";
 import { AuthService } from "./auth.service";
+import { encryptPassWord } from '../../../common/helpers/crypto-helper';
 
 @Injectable()
 export class UsersService {
@@ -25,7 +26,7 @@ export class UsersService {
     }
 
     async update(id: string, body: UpdateUserDto){
-        const hashPass = await this.authService.encryptPassWord(body.passWord);
+        const hashPass = await encryptPassWord(body.passWord);
         
         await this.userRepository.save({
             id,

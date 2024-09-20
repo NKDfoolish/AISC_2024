@@ -1,5 +1,7 @@
 import { Exclude } from "class-transformer";
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { User } from "./user.entity";
+import { Type } from "./type.entity";
 
 @Entity('donation')
 export class Donation {
@@ -23,4 +25,10 @@ export class Donation {
 
     @UpdateDateColumn()
     updated_at: Date;
+    
+    // @OneToOne(() => User, (user) => user.donation)
+    // user: User;
+
+    @OneToOne(() => Type, (type) => type.donation)
+    type: Type;
 }

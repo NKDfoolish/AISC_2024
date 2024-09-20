@@ -1,5 +1,6 @@
 import { Exclude } from "class-transformer";
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "./user.entity";
 
 @Entity('users-display')
 export class UserDisplay {
@@ -14,4 +15,7 @@ export class UserDisplay {
 
     @Column()
     rank: number;
+    
+    @OneToOne(() => User, (user) => user.userDisplay)
+    user: User;
 }

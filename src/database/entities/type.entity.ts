@@ -1,5 +1,6 @@
 import { Exclude } from "class-transformer";
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Donation } from "./donation.entity";
 
 @Entity('type')
 export class Type {
@@ -11,4 +12,7 @@ export class Type {
 
     @Column()
     co2: number;
+
+    @OneToOne(() => Donation, (donation) => donation.type)
+    donation: Donation;
 }

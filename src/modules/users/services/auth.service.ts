@@ -4,6 +4,8 @@ import { User } from "src/database/entities/user.entity";
 import { Repository } from "typeorm";
 import { CreateUserDto } from "../dto/create-user.dto";
 import * as bcrypt from 'bcrypt';
+import { encryptPassWord } from '../../../common/helpers/crypto-helper';
+
 
 @Injectable()
 export class AuthService {
@@ -11,13 +13,6 @@ export class AuthService {
         @InjectRepository(User)
         private userRepository: Repository<User>,
     ){}
-
-    async encryptPassWord(rawPassWord: string){
-        const salt = await bcrypt.genSalt();
-        const encryptPass = await bcrypt.hash(rawPassWord, salt);
-
-        return encryptPass;
-    }
 
     async signUp(createUser: CreateUserDto){
         const isExist = await this.userRepository.existsBy({
@@ -28,7 +23,7 @@ export class AuthService {
             throw new BadRequestException('User already exists');
         }
 
-        const hashPass = await this.encryptPassWord(createUser.passWord);
+        const hashPass = await encryptPassWord(createUser.passWord);
 
         return await this.userRepository.save({
             ...createUser,

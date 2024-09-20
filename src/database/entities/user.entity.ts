@@ -1,5 +1,8 @@
 import { Exclude } from "class-transformer";
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Ranking } from "./ranking.entity";
+import { Donation } from "./donation.entity";
+import { UserDisplay } from "./user-display.entity";
 
 @Entity('users')
 export class User {
@@ -33,4 +36,13 @@ export class User {
 
     @UpdateDateColumn()
     updatedAt: Date;
+
+    @OneToOne(() => Ranking, (ranking) => ranking.user)
+    ranking: Ranking;
+
+    // @OneToOne(() => Donation, (donation) => donation.user)
+    // donation: Donation;
+
+    @OneToOne(() => UserDisplay, (userDisplay) => userDisplay.user)
+    userDisplay: UserDisplay;
 }
