@@ -32,10 +32,12 @@ export class CreateBrand1726630314190 implements MigrationInterface {
                 {
                   name: 'total_amount_voucher',
                   type: 'integer',
+                  isNullable: true,
                 },
                 {
                   name: 'total_remaining_voucher',
                   type: 'integer',
+                  isNullable: true,
                 },
                 {
                   name: 'sign_date',
@@ -45,6 +47,7 @@ export class CreateBrand1726630314190 implements MigrationInterface {
                 {
                   name: 'views',
                   type: 'integer',
+                  isNullable: true,
                 },
                 {
                   name: 'created_at',

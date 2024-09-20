@@ -27,7 +27,7 @@ export class CreateReward1726630518441 implements MigrationInterface {
                 },
                 {
                   name: 'score',
-                  type: 'varchar',
+                  type: 'decimal',
                 },
                 {
                   name: 'total_remaining',

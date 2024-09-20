@@ -16,7 +16,7 @@ export class Reward {
     description: string;
 
     @Column()
-    score: string;
+    score: number;
 
     @Column()
     total_remaining: number;

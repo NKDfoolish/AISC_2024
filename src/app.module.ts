@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DatabaseConfig } from 'ormconfig';
 import { UsersModule } from './modules/users/users.module';
 import { CurrentUserMiddleware } from './modules/users/middlewares/current-user.middleware';
+import { BrandsModule } from './modules/brands/brands.module';
 
 @Module({
   imports: [
@@ -13,7 +14,8 @@ import { CurrentUserMiddleware } from './modules/users/middlewares/current-user.
       autoLoadEntities: true,
       logging: true,
     }),
-    UsersModule
+    UsersModule,
+    BrandsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
