@@ -14,9 +14,6 @@ export class Ranking {
     ranking_month: string;
 
     @Column()
-    description: string;
-
-    @Column()
     total_score: number;
 
     @Column()

@@ -40,8 +40,8 @@ export class User {
     @OneToOne(() => Ranking, (ranking) => ranking.user)
     ranking: Ranking;
 
-    // @OneToOne(() => Donation, (donation) => donation.user)
-    // donation: Donation;
+    @OneToOne(() => Donation, (donation) => donation.user)
+    donation: Donation;
 
     @OneToOne(() => UserDisplay, (userDisplay) => userDisplay.user)
     userDisplay: UserDisplay;
