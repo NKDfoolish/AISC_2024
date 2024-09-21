@@ -27,8 +27,10 @@ export class Donation {
     updated_at: Date;
     
     @OneToOne(() => User, (user) => user.donation)
+    @JoinColumn({name:'user_id'})
     user: User;
 
     @OneToOne(() => Type, (type) => type.donation)
+    @JoinColumn({name:'type_id'})
     type: Type;
 }

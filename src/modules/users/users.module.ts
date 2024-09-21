@@ -10,7 +10,7 @@ import { UserDisplay } from 'src/database/entities/user-display.entity';
 
 @Module({
     imports: [TypeOrmModule.forFeature([
-        User, Ranking, Donation, UserDisplay
+        User, UserDisplay
     ])],
     providers:[UsersService, AuthService],
     controllers:[UserController],

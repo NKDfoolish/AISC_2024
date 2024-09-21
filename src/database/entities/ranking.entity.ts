@@ -1,5 +1,5 @@
 import { Exclude } from "class-transformer";
-import { Column, CreateDateColumn, Entity, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { User } from "./user.entity";
 
 @Entity('ranking')
@@ -20,5 +20,6 @@ export class Ranking {
     rank: number;
 
     @OneToOne(() => User, (user) => user.ranking)
+    @JoinColumn({name:'user_id'})
     user: User;
 }

@@ -1,5 +1,5 @@
 import { Exclude } from "class-transformer";
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Brand } from "./brand.entity";
 
 @Entity('reward')
@@ -31,6 +31,7 @@ export class Reward {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @OneToMany(() => Brand, (brand) => brand.reward)
-    brands: Brand[];
+    @ManyToOne(() => Brand, (brand) => brand.rewards)
+    @JoinColumn({name: 'brand_id'})
+    brand: Brand;
 }

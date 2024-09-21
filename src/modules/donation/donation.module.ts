@@ -7,7 +7,7 @@ import { Type } from 'src/database/entities/type.entity';
 
 @Module({
     imports: [TypeOrmModule.forFeature([
-        Donation, Type
+        Donation
     ])],
     providers:[DonationService],
     controllers:[DonationController],
