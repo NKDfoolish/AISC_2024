@@ -28,6 +28,7 @@ export class CreateRanking1726629039693 implements MigrationInterface {
                 {
                   name: 'rank',
                   type: 'integer',
+                  isNullable: true,
                 },
             ]
         }))

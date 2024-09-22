@@ -2,7 +2,7 @@ import { Exclude } from "class-transformer";
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "./user.entity";
 
-@Entity('users-display')
+@Entity('users_display')
 export class UserDisplay {
     @PrimaryGeneratedColumn('uuid')
     id: string;
