@@ -17,6 +17,8 @@ import { UpdateUserDto } from "../dto/update-user.dto";
 import { RolesGuard } from "src/guards/roles.guard";
 import { Roles } from "../decorators/roles.decorator";
 import { ApiTags } from '@nestjs/swagger';
+import { CurrentUser } from '../decorators/current-user.decorator';
+import { User } from '../../../database/entities/user.entity';
 
 @Controller('users')
 @ApiTags('users')
@@ -29,9 +31,9 @@ export class UserController {
     @UseGuards(RolesGuard)
     @Roles(['ADMIN'])
     @Get()
-    findAll(){
+    findAll(@CurrentUser() currentUser: User) {
       // test decorator custom =))
-      // console.log( "current user: "+ currentUser.role + "---" + currentUser.userName);
+      console.log( "current user: "+ currentUser.role + "---" + currentUser.userName);
       
       return this.userService.findAll();
     }
