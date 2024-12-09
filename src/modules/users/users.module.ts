@@ -7,13 +7,20 @@ import { AuthService } from './services/auth.service';
 import { Ranking } from 'src/database/entities/ranking.entity';
 import { Donation } from 'src/database/entities/donation.entity';
 import { UserDisplay } from 'src/database/entities/user-display.entity';
+import { JwtModule } from '@nestjs/jwt';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([
-        User, UserDisplay
-    ])],
+    imports: [
+      TypeOrmModule.forFeature([User, UserDisplay]),
+        JwtModule.register({
+            global: true,
+            secret: process.env.JWT_SECRET,
+            signOptions: { expiresIn: '1h' },
+        }),
+    ],
+    controllers: [UserController],
     providers:[UsersService, AuthService],
-    controllers:[UserController],
-    exports: [UsersService],
+    exports: [UsersService, AuthService],
 })
 export class UsersModule {}

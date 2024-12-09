@@ -1,10 +1,9 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DatabaseConfig } from 'ormconfig';
 import { UsersModule } from './modules/users/users.module';
-import { CurrentUserMiddleware } from './modules/users/middlewares/current-user.middleware';
 import { BrandsModule } from './modules/brands/brands.module';
 import { RankingModule } from './modules/ranking/ranking.module';
 import { TypeModule } from './modules/type/type.module';
@@ -25,15 +24,9 @@ import { UsersDisplayModule } from './modules/users-display/users-display.module
     UsersDisplayModule,
     TypeModule,
     RewardModule,
-    DonationModule
+    DonationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(CurrentUserMiddleware)
-      .forRoutes('*');
-  }
-}
+export class AppModule {}

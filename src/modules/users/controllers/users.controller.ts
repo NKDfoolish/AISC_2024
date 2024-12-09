@@ -1,4 +1,14 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Session, UseGuards } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UnauthorizedException,
+  UseGuards,
+} from '@nestjs/common';
 import { UsersService } from "../services/users.service";
 import { CreateUserDto } from "../dto/create-user.dto";
 import { AuthService } from "../services/auth.service";
@@ -6,9 +16,7 @@ import { SignInDto } from "../dto/sign-in.dto";
 import { UpdateUserDto } from "../dto/update-user.dto";
 import { RolesGuard } from "src/guards/roles.guard";
 import { Roles } from "../decorators/roles.decorator";
-import { CurrentUser } from "../decorators/current-user.decorator";
-import { User } from "src/database/entities/user.entity";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('users')
 @ApiTags('users')
@@ -18,8 +26,8 @@ export class UserController {
         private authService: AuthService,
     ){}
 
-    // @UseGuards(RolesGuard)
-    // @Roles(['ADMIN'])
+    @UseGuards(RolesGuard)
+    @Roles(['ADMIN'])
     @Get()
     findAll(){
       // test decorator custom =))
@@ -28,21 +36,21 @@ export class UserController {
       return this.userService.findAll();
     }
 
-    // @UseGuards(RolesGuard)
+    // @UseGuards(JwtAuthGuard)
     // @Roles(['ADMIN'])
     @Get(':id')
     findOne(@Param('id') id: string) {
       return this.userService.findOne(id);
     }
 
-    // @UseGuards(RolesGuard)
+    // @UseGuards(JwtAuthGuard)
     // @Roles(['ADMIN'])
     @Patch(':id')
     update(@Param('id') id: string, @Body() body: UpdateUserDto) {
       return this.userService.update(id, body);
     }
 
-    // @UseGuards(RolesGuard)
+    // @UseGuards(JwtAuthGuard)
     // @Roles(['ADMIN'])
     @Delete(':id')
     async delete(@Param('id') id: string) {
@@ -55,17 +63,32 @@ export class UserController {
     }
 
     @Post('sign-in')
-    async signIn(
-      @Body() body: SignInDto,
-      @Session() session: Record<string, any>,
-    ){      
-      const user = await this.authService.signIn(body.userName, body.passWord);
-      session.userId = user.id;
-      return user
+    async signIn(@Body() body: SignInDto){
+      return await this.authService.signIn(body.userName, body.passWord);
     }
 
-    @Post('sign-out')
-    async signOut(@Session() session: Record<string, any>){
-      delete session.userId;
+  @Post('verify-token')
+  async verifyToken(@Body('token') token: string) {
+    if (!token) {
+      throw new UnauthorizedException('No token provided');
     }
+
+    try {
+      const user = await this.authService.verifyToken(token);
+      return {
+        message: 'Token is valid',
+        user: {
+          id: user.id,
+          userName: user.userName,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          telephone: user.telephone,
+          role: user.role,
+        },
+      };
+    } catch (error) {
+      throw new UnauthorizedException('Invalid token');
+    }
+  }
 }
