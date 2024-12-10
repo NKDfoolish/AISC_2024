@@ -14,11 +14,10 @@ import { CreateUserDto } from "../dto/create-user.dto";
 import { AuthService } from "../services/auth.service";
 import { SignInDto } from "../dto/sign-in.dto";
 import { UpdateUserDto } from "../dto/update-user.dto";
-import { RolesGuard } from "src/guards/roles.guard";
-import { Roles } from "../decorators/roles.decorator";
 import { ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '../decorators/current-user.decorator';
 import { User } from '../../../database/entities/user.entity';
+import { VerifyTokenDto } from '../dto/verify-token.dto';
 
 @Controller('users')
 @ApiTags('users')
@@ -28,12 +27,12 @@ export class UserController {
         private authService: AuthService,
     ){}
 
-    @UseGuards(RolesGuard)
-    @Roles(['ADMIN'])
+    // @UseGuards(RolesGuard)
+    // @Roles(['ADMIN'])
     @Get()
     findAll(@CurrentUser() currentUser: User) {
       // test decorator custom =))
-      console.log( "current user: "+ currentUser.role + "---" + currentUser.userName);
+      // console.log( "current user: "+ currentUser.role + "---" + currentUser.userName);
       
       return this.userService.findAll();
     }
@@ -69,28 +68,28 @@ export class UserController {
       return await this.authService.signIn(body.userName, body.passWord);
     }
 
-  @Post('verify-token')
-  async verifyToken(@Body('token') token: string) {
-    if (!token) {
-      throw new UnauthorizedException('No token provided');
-    }
+    @Post('verify-token')
+    async verifyToken(@Body() jwt: VerifyTokenDto) {
+      if (!jwt.token) {
+        throw new UnauthorizedException('No token provided');
+      }
 
-    try {
-      const user = await this.authService.verifyToken(token);
-      return {
-        message: 'Token is valid',
-        user: {
-          id: user.id,
-          userName: user.userName,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email,
-          telephone: user.telephone,
-          role: user.role,
-        },
-      };
-    } catch (error) {
-      throw new UnauthorizedException('Invalid token');
+      try {
+        const user = await this.authService.verifyToken(jwt.token);
+        return {
+          message: 'Token is valid',
+          user: {
+            id: user.id,
+            userName: user.userName,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            telephone: user.telephone,
+            role: user.role,
+          },
+        };
+      } catch (error) {
+        throw new UnauthorizedException('Invalid token');
+      }
     }
-  }
 }
